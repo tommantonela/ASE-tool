@@ -1,0 +1,470 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ArchitecturalDebtSensitivityAnalysis</groupId>
+	<artifactId>ArchitecturalDebtSensitivityAnalysis</artifactId>
+	<version>0.9.0-SNAPSHOT</version>
+	<licenses>
+		<license>
+			<name>Apache License 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<repositories>
+
+		<repository>
+			<id>central1</id>
+			<name>CDA Repository</name>
+			<url>http://programmers-friend.org/maven/repo/</url>
+		</repository>
+
+		<repository>
+			<id>central2</id>
+			<name>Central</name>
+			<url>http://central.maven.org/maven2/</url>
+		</repository>
+
+		<repository>
+			<id>com.gitblit</id>
+			<name>Gitblit</name>
+			<url>http://gitblit.github.io/gitblit-maven/</url>
+			<layout>default</layout>
+		</repository>
+
+		<repository>
+			<id>JCenter</id>
+			<name>JCenter</name>
+			<url>http://jcenter.bintray.com/</url>
+			<layout>default</layout>
+		</repository>
+
+
+
+	</repositories>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.7</version> <executions> <execution> <id>copy-dependencies</id> 
+				<phase>package</phase> <goals> <goal>copy-dependencies</goal> </goals> <configuration> 
+				<outputDirectory>${project.basedir}/dist/lib</outputDirectory> <overWriteReleases>true</overWriteReleases> 
+				<overWriteSnapshots>true</overWriteSnapshots> <overWriteIfNewer>true</overWriteIfNewer> 
+				</configuration> </execution> </executions> </plugin> -->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<mkdir dir="${project.basedir}/dist" />
+								<mkdir dir="${project.basedir}/release" />
+								<copy tofile="${project.basedir}/dist/${project.build.finalName}.jar"
+									file="${project.build.directory}/${project.build.finalName}.jar" />
+								<tar
+									destfile="${project.basedir}/release/${project.build.finalName}.tar.gz"
+									compression="gzip" basedir="${project.basedir}/dist/" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/com.hello2morrow/sonargraph-integration-access -->
+		<dependency>
+			<groupId>com.hello2morrow</groupId>
+			<artifactId>sonargraph-integration-access</artifactId>
+			<version>3.2.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>3.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jgrapht</groupId>
+			<artifactId>jgrapht-core</artifactId>
+			<version>0.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.logging.log4j</groupId> -->
+		<!-- <artifactId>log4j-web</artifactId> -->
+		<!-- <version>2.7</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.logging.log4j</groupId> -->
+		<!-- <artifactId>log4j-api</artifactId> -->
+		<!-- <version>2.7</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.logging.log4j</groupId> -->
+		<!-- <artifactId>log4j-slf4j-impl</artifactId> -->
+		<!-- <version>2.7</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-tinkerpop-api-impl</artifactId>
+			<version>0.3-2.3.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tinkerpop</groupId>
+			<artifactId>gremlin-core</artifactId>
+			<version>3.2.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tinkerpop</groupId>
+			<artifactId>neo4j-gremlin</artifactId>
+			<version>3.2.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+					<artifactId>groovy</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.thinkaurelius.titan</groupId> <artifactId>titan-core</artifactId> 
+			<version>1.0.0</version> <exclusions> <exclusion> <artifactId>gremlin-core</artifactId> 
+			<groupId>org.apache.tinkerpop</groupId> </exclusion> <exclusion> <artifactId>gremlin-groovy</artifactId> 
+			<groupId>org.apache.tinkerpop</groupId> </exclusion> </exclusions> </dependency> -->
+		<dependency>
+			<groupId>org.apache.tinkerpop</groupId>
+			<artifactId>tinkergraph-gremlin</artifactId>
+			<version>3.2.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>gremlin-core</artifactId>
+					<groupId>org.apache.tinkerpop</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.bcel</groupId>
+			<artifactId>bcel</artifactId>
+			<!-- <version>5.2</version> -->
+			<!-- <version>6.0-RC3</version> -->
+			<version>6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.60</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>4.3.0.201604071810-r</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit.archive</artifactId>
+			<version>4.3.0.201604071810-r</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.gitblit</groupId>
+			<artifactId>gitblit</artifactId>
+			<version>1.7.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+					<artifactId>groovy-all</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-invoker</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-model</artifactId>
+			<version>3.3.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.scout.sdk.deps</groupId>
+			<artifactId>org.eclipse.m2e.core</artifactId>
+			<!-- <version>1.6.0.20150526-2032</version> -->
+			<version>1.7.0.20160603-1933</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>it.unimib.disco.essere</groupId> -->
+		<!-- <artifactId>jdt</artifactId> -->
+		<!-- <version>0.0.1-SNAPSHOT</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>tycho-compiler-jdt</artifactId>
+			<version>0.25.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-slf4j-logging</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160212</version>
+		</dependency>
+		<dependency>
+			<groupId>me.shib.java.lib</groupId>
+			<artifactId>telegram-bot-java</artifactId>
+			<version>1.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.dblock</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>2.6.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.sun.istack/istack-commons-runtime -->
+		<dependency>
+			<groupId>com.sun.istack</groupId>
+			<artifactId>istack-commons-runtime</artifactId>
+			<version>3.0.7</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-cda-core -->
+		<dependency>
+			<groupId>org.pfsw</groupId>
+			<artifactId>pf-cda-core</artifactId>
+			<version>2.2.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-api -->
+		<dependency>
+			<groupId>net.sf.jung</groupId>
+			<artifactId>jung-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-graph-impl -->
+		<dependency>
+			<groupId>net.sf.jung</groupId>
+			<artifactId>jung-graph-impl</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.3</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.moeaframework/moeaframework -->
+		<dependency>
+			<groupId>org.moeaframework</groupId>
+			<artifactId>moeaframework</artifactId>
+			<version>2.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>arcan</groupId>
+			<artifactId>arcan</artifactId>
+			<version>1.3.6</version>
+			<scope>system</scope>
+			<systemPath>
+    ${project.basedir}/lib/Arcan-1.3.6.jar
+  </systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>combinatorics</groupId>
+			<artifactId>combinatorics</artifactId>
+			<version>0.9.0</version>
+			<scope>system</scope>
+			<systemPath>
+    ${project.basedir}/lib/combinatorics.jar
+  </systemPath>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-settings -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-settings</artifactId> -->
+		<!-- <version>4.0.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-cda-base -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-cda-base</artifactId> -->
+		<!-- <version>2.2.0</version> -->
+		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-file -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-file</artifactId> -->
+		<!-- <version>6.2.0</version> -->
+		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-logging -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-logging</artifactId> -->
+		<!-- <version>3.2.0</version> -->
+		<!-- </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-utilities -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-utilities</artifactId> -->
+		<!-- <version>6.2.0</version> -->
+		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-text -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-text</artifactId> -->
+		<!-- <version>8.2.0</version> -->
+		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-textx -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-textx</artifactId> -->
+		<!-- <version>4.1.0</version> -->
+		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-model -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.pfsw</groupId> -->
+		<!-- <artifactId>pf-model</artifactId> -->
+		<!-- <version>3.2.0</version> -->
+		<!-- </dependency> -->
+
+	</dependencies>
+
+</project>
