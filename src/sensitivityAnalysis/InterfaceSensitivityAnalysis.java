@@ -160,6 +160,10 @@ public class InterfaceSensitivityAnalysis {
 						logger.info("The log level was changed to: WARNING.");
 						org.apache.logging.log4j.core.config.Configurator.setRootLevel(Level.WARN);
 						break;
+					case "all":
+						logger.info("The log level was changed to: ALL.");
+						org.apache.logging.log4j.core.config.Configurator.setRootLevel(Level.ALL);
+						break;
 					case "severe":
 						logger.info("The log level was changed to: SEVERE.");
 						org.apache.logging.log4j.core.config.Configurator.setRootLevel(Level.ERROR);
