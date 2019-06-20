@@ -13,6 +13,8 @@ By leveraging on Architectural Smells, the goal of the Sensitivity Analysis is t
 
 The tool is designed as pipeline, in which existing modules for detecting smells and computing metrics from the source code can be configured. These smells and metrics depend on the Technical Debt under consideration, which is also a parameter for the pipeline. 
 
+![Tool Pipeline](https://github.com/tommantonela/Sen4Smells/blob/gh-pages/general_pipeline.png)
+
 ## Usage
 
 A description of the software's architecture, tutorials and file examples can be found in the project's [Wiki](https://github.com/tommantonela/Sen4Smells/wiki).
