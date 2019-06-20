@@ -1,0 +1,13 @@
+AS,UnstableDependenciesPackage,InstabilityUnstableDependenciesPackage,CorrelatedPackage,InstabilityCorrelatedPackage
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.management.event,0.7777777777777778
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.component.bean,0.927710843373494
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.model,0.7282608695652174
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.component.mock,0.9375
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.builder.xml,0.9594594594594594
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.model.dataformat,0.9523809523809523
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.management,0.9487179487179487
+27917,org.apache.camel.builder,0.6716417910447762,org.apache.camel.language.bean,0.85
+27938,org.apache.camel.spi,0.026737967914438502,org.apache.camel,0.033707865168539325
+27893,org.apache.camel.model.language,0.46808510638297873,org.apache.camel.language.tokenizer,0.8333333333333334
+27893,org.apache.camel.model.language,0.46808510638297873,org.apache.camel.language.bean,0.85
+27893,org.apache.camel.model.language,0.46808510638297873,org.apache.camel.builder,0.6716417910447762

@@ -1,0 +1,4 @@
+AS,package,FanIn,FanOut,Total Dependences
+29861,org.apache.camel.processor,14,19,33
+29902,org.apache.camel.impl,24,28,52
+29962,org.apache.camel.util,34,21,55

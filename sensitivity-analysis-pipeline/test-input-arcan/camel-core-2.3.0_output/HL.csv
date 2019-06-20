@@ -1,0 +1,2 @@
+AS,class,FanIn,FanOut,Total Dependences
+29785,org.apache.camel.component.mock.MockEndpoint,20,28,48
