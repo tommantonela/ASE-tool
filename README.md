@@ -1,11 +1,11 @@
-# ASE-tool
+# Sen4Smells
 Tool for Prioritizing Architecture-Sensitive Smells based on a Technical Debt Index
 
-ASE-tool is licenced under the Apache License V2.0.
+Sen4Smells is licenced under the Apache License V2.0.
 
-The main functionality of the ASE-tool is providing assistence to engineers for interpretating Technical Debt metrics in terms problematic Architectural Smells and system packages.
+The main functionality of the Sen4Smells is providing assistence to engineers for interpretating Technical Debt metrics in terms problematic Architectural Smells and system packages.
 
-ASE-tool is able to perform a sensitivity analysis for a collection of system values provided by a predetermined debt index. Our approach relies on two building blocks: 
+Sen4Smells is able to perform a sensitivity analysis for a collection of system values provided by a predetermined debt index. Our approach relies on two building blocks: 
 1. The adaptation of an existing SA method to AS-based debt indices.
 2. A decomposition strategy for dealing with the index at different granularity levels. 
 
@@ -15,7 +15,7 @@ The tool is designed as pipeline, in which existing modules for detecting smells
 
 ## Usage
 
-A description of the software's architecture, tutorials and file examples can be found in the project's [Wiki](https://github.com/tommantonela/ASE-tool/wiki).
+A description of the software's architecture, tutorials and file examples can be found in the project's [Wiki](https://github.com/tommantonela/Sen4Smells/wiki).
 
 ## Contact information
 
