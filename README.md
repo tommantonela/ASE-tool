@@ -19,6 +19,8 @@ The tool is designed as pipeline, in which existing modules for detecting smells
 
 A description of the software's architecture, tutorials and file examples can be found in the project's [Wiki](https://github.com/tommantonela/Sen4Smells/wiki).
 
+A video demonstrating usage cases can be found at https://youtu.be/XKmj7RQRvn4. 
+
 ## Contact information
 
 - _Antonela Tommasel_ (ISISTAN, CONICET-UNICEN. Argentina) antonela.tommasel@isistan.unicen.edu.ar 
