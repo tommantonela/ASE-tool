@@ -2,6 +2,7 @@ package parser;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -83,6 +84,20 @@ public class ParserPackage extends Parser{
 		efferents = outAux;
 		afferents = inAux;
 
+		Iterator<String> it_pp = efferents.keySet().iterator();
+		while(it_pp.hasNext()){
+			String pp = it_pp.next();
+			if(efferents.get(pp).isEmpty() && afferents.get(pp).isEmpty()){
+				it_pp.remove();
+				afferents.remove(pp);
+				
+				Set<String> cc = namespaces.get(pp);
+				clases.removeAll(cc);
+				classNamespace.keySet().removeAll(cc);				
+				namespaces.remove(pp);
+			}
+		}
+		
 		inside_classes.addAll(clases);
 
 		clases.clear();

@@ -31,8 +31,8 @@ public class VersionSonarGraph extends Version{
 
 		ISystemInfoProcessor info = controller.createSystemInfoProcessor();
 
-		List<ICycleGroupIssue> packageCycles = getCycleGroup(info, "namespacecyclegroup");
-		packageCycles.addAll(getCycleGroup(info, "criticalnamespacecyclegroup"));
+		List<ICycleGroupIssue> packageCycles = getCycleGroup(info, "NamespaceCycleGroup");
+		packageCycles.addAll(getCycleGroup(info, "CriticalNamespaceCycleGroup"));
 		
 		smellTypes.add("cd");
 		
@@ -40,8 +40,8 @@ public class VersionSonarGraph extends Version{
 		features.put("parserdependenciestoremove",features.size());
 		features.put("structuraldebtindex",features.size());
 		
-		sortedFeatures.add("componentDependenciestoremove");
-		sortedFeatures.add("parserDependenciestoremove");
+		sortedFeatures.add("componentdependenciestoremove");
+		sortedFeatures.add("parserdependenciestoremove");
 		sortedFeatures.add("structuraldebtindex");
 		
 		List<String> cycleComponents = new ArrayList<>();
@@ -117,6 +117,7 @@ public class VersionSonarGraph extends Version{
 	public static void main(String[] args) {
 
 		String xmlPath = "E:/test_arcanSA/aa_2019-06-12_00-52-28.xml";
+		xmlPath = "E:/test_arcanSA/apache-camel/camel-core-2.2.0_2019-06-18_17-05-44.xml";
 
 		ISonargraphSystemController controller = ControllerAccess.createController();
 		Result result = controller.loadSystemReport(new File(xmlPath));

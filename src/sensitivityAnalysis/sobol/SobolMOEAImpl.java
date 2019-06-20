@@ -1,6 +1,5 @@
 package sensitivityAnalysis.sobol;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,7 +20,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.moeaframework.analysis.sensitivity.SampleGenerator;
@@ -85,7 +83,7 @@ public class SobolMOEAImpl extends DefaultSA {
 		return;
 	}
 
-	protected void doSampling() {
+	protected boolean doSampling() {
 
 		CommandLine cmd = null;
 		try {
@@ -98,16 +96,17 @@ public class SobolMOEAImpl extends DefaultSA {
 			logger.info("\tinput file-->  "+ file1);
 
 			String file2 = cmd.getOptionValue("output");
-			
+
 			logger.info("\toutput file-->  "+ file2);
 
 			generator.run(cmd);
 
-		} catch (ParseException | IOException e) {
+		} catch (Throwable e){// | IOException e) {
 			logger.error("Error while sampling: "+e.getMessage());
+			return false;
 		}
 
-		return;
+		return true;
 	}
 
 	protected void doAnalysis() {
@@ -133,7 +132,7 @@ public class SobolMOEAImpl extends DefaultSA {
 
 			SobolAnalysis sobol = new SobolAnalysis();
 			sobol.run(cmd);	
-			
+
 			logger.info("== Done!");
 
 		} catch (Exception e) {
@@ -151,7 +150,7 @@ public class SobolMOEAImpl extends DefaultSA {
 
 		// Open the file
 		FileInputStream fstream;
-		
+
 		try {
 			fstream = new FileInputStream(InterfaceSensitivityAnalysis.INPUT_PATH + File.separator+"sa"+ File.separator + "sobolIndices.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
@@ -161,8 +160,8 @@ public class SobolMOEAImpl extends DefaultSA {
 			//Read File Line By Line
 			strLine = br.readLine(); // This removes the header
 
-//			String smellId = null; 
-//			double smellScore;
+			//			String smellId = null; 
+			//			double smellScore;
 
 			double[] values = null;
 			boolean parseFirstOrder = false;
@@ -206,25 +205,25 @@ public class SobolMOEAImpl extends DefaultSA {
 
 		if(totalOrderEffects.isEmpty())
 			return null;
-		
+
 		List<String> rankedSmells = new ArrayList<>(totalOrderEffects.keySet());
-		
+
 		Collections.sort(rankedSmells,new Comparator<String>() {
 
 			@Override
 			public int compare(String o1, String o2) {
 				double value2 = totalOrderEffects.get(o2)[0];
 				double value1 = totalOrderEffects.get(o1)[0];
-				
+
 				if(value1 > value2)
 					return -1;
 				if(value1 < value2)
 					return 1;
 				return 0;
-				
+
 			}
 		});
-		
+
 		BufferedWriter out;
 		try {
 			double[] values = null;
@@ -237,7 +236,7 @@ public class SobolMOEAImpl extends DefaultSA {
 			ArchSmell s = null;
 			String description = null;
 			for (String fo: rankedSmells) {
-//			for (String fo: firstOrderEffects.keySet()) {
+				//			for (String fo: firstOrderEffects.keySet()) {
 				s = SmellFactory.findSmell(fo);
 				if (s != null)
 					description = s.getDescription();

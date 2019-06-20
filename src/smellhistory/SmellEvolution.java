@@ -138,11 +138,11 @@ public class SmellEvolution {
 		List<String> allFeatures = new ArrayList<>(versions.get(lastVersion).getFeatures());
 		Collections.sort(allFeatures);
 
-		//		System.out.println(allFeatures);
+//				System.out.println(allFeatures);
 
 		sortedVersions.addAll(versions.keySet());
 		Collections.sort(sortedVersions,new NaturalOrderComparator());
-
+		
 		Set<String> smellsInThisVersion = new HashSet<>(); //could be replaced by simply considering those that do not have a score for the current version
 
 		//		Map<String,Set<String>> smellMatchings = new HashMap<>();
@@ -160,14 +160,21 @@ public class SmellEvolution {
 
 			for(String smell : smells){ //for each smell in the version...
 
+//				System.out.println(smell);
+				
 				double [] currentScores = version.getScoresForSmell(smell);
 
 				Map<String,double[]> previousScores = smellEvolution.get(smell);
 
 				int foundVersion = currentVersion;
 
+//				System.out.println(Arrays.toString(currentScores));
+//				System.out.println(previousScores);
+				
 				if(previousScores == null && currentVersion > 0){ // i > 0 means that there was another version and we can try to match it
 
+//					System.out.println("previous scores null & not first version");
+					
 					String alternative = null;
 					for(int vant = currentVersion-1;vant>=0 && alternative == null;vant--){
 						alternative = versions.get(sortedVersions.get(vant)).findSmell(smell); 
@@ -183,6 +190,8 @@ public class SmellEvolution {
 
 				if(previousScores != null){ //updates scores
 
+//					System.out.println("encontré con qué matchear");
+					
 					for(int j=0;j<allFeatures.size();j++){
 						double [] sc = previousScores.get(allFeatures.get(j));
 						sc[currentVersion] = currentScores[version.indexOfFeature(allFeatures.get(j))];
@@ -426,6 +435,7 @@ public class SmellEvolution {
 			String name = InterfaceSensitivityAnalysis.INPUT_PATH+File.separator+"smell_evolution_"+indexUnderAnalysis+"__"+firstVersion+"_"+lastVersion+".csv";
 			if(new File(name).exists())
 				return name;
+			return null;
 		}
 		
 		//if not, we look for the "last" file, meaning the file with the largest span of versions as defined in the comparator
@@ -499,6 +509,7 @@ public class SmellEvolution {
 			logger.info("Getting top level packages with classes inside for: "+version);
 			List<String> pp = v.getTopLevelPackages();
 			highLevelRoot = Version.getHighLevelRoot();
+			logger.info("Top level packages for: "+version+" "+pp.size());
 			return pp;
 		}
 
@@ -509,6 +520,7 @@ public class SmellEvolution {
 			Parser parser = FactoryParser.getParser(fileName,"package");
 			List<String> aux = new ArrayList<String> (parser.getTopLevelPackages());
 			highLevelRoot = parser.getHighLevelRootPackage();
+			logger.info("Top level packages for: "+version+" "+aux.size());
 			return aux;
 		}				
 
@@ -526,12 +538,15 @@ public class SmellEvolution {
 		
 		Set<String> packages = Version.getTopLevelPackages(smellsInVersion);
 		highLevelRoot = Version.getHighLevelRoot();
-
+		logger.info("Top level packages for: "+version+" "+packages.size());
 		return new ArrayList<>(packages);
 	}
 
-	public List<String> getTopLevelPackages(){
-		return getTopLevelPackagesForVersion(sortedVersions.get(sortedVersions.size()-1));
+	public Map<String,List<String>> getTopLevelPackages(){
+		Map<String,List<String>> packages = new HashMap<>();
+		for(String v : sortedVersions)
+			packages.put(v, getTopLevelPackagesForVersion(v));
+		return packages;
 	}
 
 	public String getHighLevelRoot(){

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.gitblit.utils.StringUtils;
-
 import parser.Parser;
 import parser.factory.FactoryParser;
 import sensitivityAnalysis.InterfaceSensitivityAnalysis;
@@ -155,50 +153,71 @@ public abstract class Version {
 
 		public static Set<String> getTopLevelPackages(Set<String> smells) {
 			
-			Set<String> packages = new HashSet<>();
-			
-			Set<String> aux = new HashSet<>();
+			Set<String> allPackage = new HashSet<>();
 			
 			for(String s : smells){
 				String [] packs = s.substring(s.indexOf("_")+1).split(";");
 				for(String p : packs)
-					aux.add(p);
+					allPackage.add(p);
 			}
 			
-//			System.out.println(aux);
+			highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(allPackage.toArray(new String[]{}));
+			if(highLevelRoot.endsWith("."))
+				highLevelRoot = highLevelRoot.substring(0, highLevelRoot.length()-1);
+
+			if(highLevelRoot.length() != 0)
+				return getNaivePackages(highLevelRoot,allPackage);
 			
-			if(highLevelRoot == null)
-				highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(aux.toArray(new String[]{}));
-			
-			if(!highLevelRoot.endsWith("."))
-				highLevelRoot = highLevelRoot+".";
-			
-//			System.out.println(highLevelRoot);
-			
-			for(String a : aux){ //for every package we got here
-				
-				a = a.replace(highLevelRoot, "");
-				
+			//we have no common root - we need to find the potential commons!
+			Map<String,Set<String>> potentialRoots = new HashMap<>();
+			for(String a : allPackage){
 				int index = a.indexOf(".");
+				String a_edited = a;
 				if(index > 0)
-					a = a.substring(0,index);
-				
-				packages.add(highLevelRoot+a);
-				
-//				System.out.println("-- "+a);
-//				System.out.println(highLevelRoot+a);
-				
+					a_edited = a.substring(0,index);
+
+				Set<String> aux = potentialRoots.get(a_edited);
+				if(aux == null){
+					aux = new HashSet<>();
+					potentialRoots.put(a_edited, aux);
+				}
+
+				aux.add(a);
 			}
-			
-			highLevelRoot = highLevelRoot.substring(0, highLevelRoot.length()-1); //remove the trailing dot
-			
-//			System.out.println("packages: "+packages);
-			
+
+			Set<String> packages = new HashSet<>();
+			for(String pr : potentialRoots.keySet()){
+				
+				highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(potentialRoots.get(pr).toArray(new String[]{}));
+				
+				packages.addAll(getNaivePackages(highLevelRoot,potentialRoots.get(pr)));	
+			}
 			return packages;
-			
 		}
 
+		private static Set<String> getNaivePackages(String topLevel,Set<String> packagesToSearch) {
+			Set<String> packages = new HashSet<>();
 
+			for(String a : packagesToSearch){ //for every package we got here
+
+				a = a.replace(topLevel, "");
+
+				if(a.length() == 0)
+					packages.add(topLevel);
+				else{
+					if(a.startsWith("."))
+						a = a.substring(1);
+					
+					int index = a.indexOf(".");
+					if(index > 0)
+						a = a.substring(0,index);
+					
+					packages.add(topLevel+"."+a);
+				}
+			}
+			return packages;
+		}
+		
 		public static String getHighLevelRoot() {
 			return highLevelRoot;
 		}

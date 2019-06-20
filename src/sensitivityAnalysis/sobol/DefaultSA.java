@@ -44,7 +44,7 @@ public abstract class DefaultSA extends SAnalysis {
 		super();
 	}
 
-	public void execute(Collection<SmellGroup> groups, boolean parameters) {
+	public boolean execute(Collection<SmellGroup> groups, boolean parameters) {
 
 		TimeWatch watch = TimeWatch.start();
 
@@ -56,38 +56,47 @@ public abstract class DefaultSA extends SAnalysis {
 
 		try {
 			File outputFile = new File(InterfaceSensitivityAnalysis.INPUT_PATH+File.separator+"sa"+ File.separator + "parameterValues.txt");
-			
-//			if (!outputFile.exists()) 
-				outputFile.createNewFile();
-	
+
+			outputFile.createNewFile();
+
 			FileReader fileReader = new FileReader(outputFile);
 
-			ParameterFile parameterFile = new ParameterFile(new File(InterfaceSensitivityAnalysis.INPUT_PATH+File.separator+"sa"  + File.separator + "parameters.txt"));
+			ParameterFile parameterFile = new ParameterFile(new File(InterfaceSensitivityAnalysis.INPUT_PATH+File.separator+"sa" + File.separator + "parameters.txt"));
 
 			SampleReader reader = new CustomSampleReader(fileReader, parameterFile);
 
-			this.doSampling(); // Sobol or Morris implementation
-			//long nSamples = generator.getNSamples(); 
+			if(this.doSampling()){ // Sobol or Morris implementation
+				//long nSamples = generator.getNSamples(); 
 
-			//this.fitSamplesToDistribution(reader); // Experimental feature -- so far, normal distribution
-			this.runModel(reader/*, nSamples*/);		
-
-			reader.close();	
+				if(reader.hasNext()){
+					//this.fitSamplesToDistribution(reader); // Experimental feature -- so far, normal distribution
+					this.runModel(reader/*, nSamples*/);	
+					this.doAnalysis(); // Sobol or Morris implementation
+				}
+				else{
+					logger.info("No parameters found. Cannot run sensitivity analysis.");
+					reader.close();	
+					return false;
+				}
+				
+				long passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
+				logger.info("Elapsed time: "+passedTimeInSeconds+" seconds.");
+				return true;
+			}
+			else{
+				logger.info("No sampling can be done.");
+				reader.close();	
+				return false;
+			}
+		
 
 		} catch (IOException e) {
 			logger.error("Error while executing sensitivity analysis: "+e.getMessage());
+			return false;
 		}
-
-		this.doAnalysis(); // Sobol or Morris implementation
-
-		long passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
-
-		logger.info("Elapsed time: "+passedTimeInSeconds+" seconds.");
-
-		return;
 	}
 
-	protected abstract void doSampling();
+	protected abstract boolean doSampling();
 
 	protected abstract void doAnalysis();
 

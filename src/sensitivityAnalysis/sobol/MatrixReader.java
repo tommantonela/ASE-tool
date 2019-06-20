@@ -218,7 +218,8 @@ class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Closeable 
 	 *        {@code false} otherwise
 	 */
 	void setSupressExceptions(boolean supressExceptions) {
-		this.supressExceptions = supressExceptions;
+//		this.supressExceptions = supressExceptions;
+		this.supressExceptions = false;
 	}
 
 }

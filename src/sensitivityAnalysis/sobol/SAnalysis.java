@@ -40,7 +40,7 @@ public abstract class SAnalysis {
 	
 	}
 
-	abstract public void execute(Collection<SmellGroup> groups, boolean parameters);
+	abstract public boolean execute(Collection<SmellGroup> groups, boolean parameters);
 	
 	protected void generateParametersFile(Collection<SmellGroup> elements) {
 		

@@ -17,6 +17,9 @@
 			<id>central1</id>
 			<name>CDA Repository</name>
 			<url>http://programmers-friend.org/maven/repo/</url>
+			  <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
 		</repository>
 
 		<repository>
@@ -39,10 +42,24 @@
 			<layout>default</layout>
 		</repository>
 
-
-
+ <repository>
+      <id>my-local</id>
+      <url>file://${project.basedir}/lib/</url>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+         	</repository>
 	</repositories>
 	<build>
+	
+			<resources>
+			<resource>
+				<directory>src/resources</directory>
+				<targetPath>resources</targetPath>
+			</resource>
+
+		</resources>
+
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
@@ -95,6 +112,31 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>
+										sensitivityAnalysis.InterfaceSensitivityAnalysis
+									</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
@@ -189,12 +231,7 @@
 			<groupId>org.apache.tinkerpop</groupId>
 			<artifactId>neo4j-gremlin</artifactId>
 			<version>3.2.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.groovy</groupId>
-					<artifactId>groovy</artifactId>
-				</exclusion>
-			</exclusions>
+			
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -254,10 +291,7 @@
 			<artifactId>gitblit</artifactId>
 			<version>1.7.1</version>
 			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.groovy</groupId>
-					<artifactId>groovy-all</artifactId>
-				</exclusion>
+
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
@@ -394,25 +428,31 @@
 			<version>2.12</version>
 		</dependency>
 
-		<dependency>
-			<groupId>arcan</groupId>
-			<artifactId>arcan</artifactId>
-			<version>1.3.6</version>
-			<scope>system</scope>
-			<systemPath>
-    ${project.basedir}/lib/Arcan-1.3.6.jar
-  </systemPath>
-		</dependency>
+                 <dependency>
+        <groupId>org.paukov</groupId>
+        <artifactId>combinatoricsLib</artifactId>
+        <version>1.0</version>
+    </dependency>
 
+                     <dependency>
+        <groupId>it.unimib.disco.essere</groupId>
+        <artifactId>arcan</artifactId>
+        <version>1.3.6</version>
+    </dependency>
+
+                <!-- https://mvnrepository.com/artifact/org.pfsw/pf-odem -->
+<dependency>
+    <groupId>org.pfsw</groupId>
+    <artifactId>pf-odem</artifactId>
+    <version>1.2.0</version>
+</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.pfsw/pf-cda-base -->
 		<dependency>
-			<groupId>combinatorics</groupId>
-			<artifactId>combinatorics</artifactId>
-			<version>0.9.0</version>
-			<scope>system</scope>
-			<systemPath>
-    ${project.basedir}/lib/combinatorics.jar
-  </systemPath>
-		</dependency>
+		<groupId>org.pfsw</groupId>
+		<artifactId>pf-cda-base</artifactId>
+		<version>2.2.0</version>
+		 </dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-settings -->
 		<!-- <dependency> -->
@@ -421,12 +461,7 @@
 		<!-- <version>4.0.0</version> -->
 		<!-- </dependency> -->
 
-		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-cda-base -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.pfsw</groupId> -->
-		<!-- <artifactId>pf-cda-base</artifactId> -->
-		<!-- <version>2.2.0</version> -->
-		<!-- </dependency> -->
+
 		<!-- https://mvnrepository.com/artifact/org.pfsw/pf-file -->
 		<!-- <dependency> -->
 		<!-- <groupId>org.pfsw</groupId> -->
