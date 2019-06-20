@@ -557,5 +557,13 @@ public class SmellEvolution {
 		firstVersion = v1;
 		lastVersion = v2;
 	}
+
+	public String getFirstVersion() {
+		return firstVersion;
+	}
+	
+	public String getLastVersion() {
+		return lastVersion;
+	}
 	
 }

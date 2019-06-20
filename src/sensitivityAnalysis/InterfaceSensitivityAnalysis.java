@@ -450,7 +450,8 @@ public class InterfaceSensitivityAnalysis {
 
 		SAnalysis sa = SAnalysis.getSA(SENSITIVITY);
 		if(sa.execute(groups, true)){
-			List<String> rankedSmells = sa.generateElementRanking(InterfaceSensitivityAnalysis.INPUT_PATH + File.separator + "smellRanking_"+LEVEL+".txt");
+						
+			List<String> rankedSmells = sa.generateElementRanking(InterfaceSensitivityAnalysis.INPUT_PATH + File.separator + "smellRanking__"+evolution.getFirstVersion()+"_"+evolution.getLastVersion()+"_"+LEVEL+".csv");
 
 			if(rankedSmells != null){
 
