@@ -141,13 +141,16 @@ public abstract class Version {
 				String fileName = InterfaceSensitivityAnalysis.INPUT_PATH+File.separator+versionName+".jar";
 				if(new File(fileName).exists()){
 					parser = FactoryParser.getParser(fileName,"package");
-					List<String> aux = new ArrayList<String> (parser.getTopLevelPackages());
-					highLevelRoot = parser.getHighLevelRootPackage();
-					return aux;
 				}				
 			}
-						
-			return new ArrayList<>(getTopLevelPackages(smells.keySet()));
+			
+			if(parser != null){
+				List<String> aux = new ArrayList<String> (parser.getTopLevelPackages());
+				highLevelRoot = parser.getHighLevelRootPackage();
+				return aux;
+			} 
+							
+			return new ArrayList<>(getTopLevelPackages(scores.keySet()));
 		}
 
 

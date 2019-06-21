@@ -358,7 +358,7 @@ public class InterfaceSensitivityAnalysis {
 
 		} catch(Throwable exp ) {
 			logger.error("Parsing failed. Reason: " + exp.getMessage());
-
+//			exp.printStackTrace();
 
 		}
 		finally{
@@ -417,10 +417,11 @@ public class InterfaceSensitivityAnalysis {
 		new File(outputSA).mkdirs(); //creating the folder to store the files needed for the sensitivity analysis
 
 		SmellFactory.setIndex(INDEX);
+
 		SmellFactory.convertToArchitecturalSmells(evolution.filterSmells(),evolution.getVersions());
 
 		Collection<SmellGroup> groups = null;
-
+		
 		switch(LEVEL){
 		case "smell-instance":
 			logger.info("Generating groups by individual smells ...");
@@ -461,8 +462,9 @@ public class InterfaceSensitivityAnalysis {
 				if(rankedSmells.size() < max)
 					max = rankedSmells.size();
 
-
-				System.out.println("Top "+max+" Ranked List of smells ");
+				
+				System.out.println("Top "+max+" ranked list of affected elements");
+				System.out.println();
 				for(int i=0;i<max;i++){
 
 					String name = null;

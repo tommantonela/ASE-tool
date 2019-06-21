@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -255,8 +256,12 @@ public class VersionADI extends Version{
 		if(!new File(path_results).exists())
 			return null;
 
-		if(normalisationValues == null)
-			normalisationValues = loadNormalisationValues(VersionADI.class.getResource("/resources/quantili-ds-norm.csv").getFile());
+		if(normalisationValues == null){
+			normalisationValues = loadNormalisationValues(VersionADI.class.getResourceAsStream("/resources/quantili-ds-norm.csv"));
+//			normalisationValues = loadNormalisationValues(VersionADI.class.getClassLoader().getResource("/resources/quantili-ds-norm.csv").getFile());
+		}
+			
+		//TODO: See why resource file is not found!
 		
 		int granularity = 2;
 		//		if(level.equalsIgnoreCase("package"))
@@ -329,7 +334,8 @@ public class VersionADI extends Version{
 	}
 
 	//given a path, loads the normalisation scores -- <smell type , <feature, scores>>
-	private static Map<String, Map<String,double[]>> loadNormalisationValues(String path) {
+//	private static Map<String, Map<String,double[]>> loadNormalisationValues(String path) {
+		private static Map<String, Map<String,double[]>> loadNormalisationValues(InputStream path) {
 
 		Map<String,Map<String,double[]>> normalization = new HashMap<>();
 
@@ -338,15 +344,18 @@ public class VersionADI extends Version{
 		
 		BufferedReader io = null;
 
-		try {
-			io = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF8"));
-		} catch (IOException e) {
-			logger.warn(" The normalisation file does not exist ");
-		}
+//		try {
+//			io = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF8"));
+			io = new BufferedReader(new InputStreamReader(path));
+//		} catch (IOException e) {
+//			logger.warn(" The normalisation file does not exist ");
+//		}
 
-		if(io == null)
-			return normalization;
-		
+//		if(io == null){
+//			logger.warn(" The normalisation file does not exist ");
+//			return normalization;
+//		}
+				
 		try {
 			String l = io.readLine();
 			l = io.readLine();
@@ -416,7 +425,8 @@ public class VersionADI extends Version{
 				
 				l = io.readLine();
 			}
-			
+			logger.info(" Normalisation file loaded");
+//			System.out.println(normalization);
 		} catch (IOException e) {
 			logger.error(" Error reading the normalisation file ");
 		}

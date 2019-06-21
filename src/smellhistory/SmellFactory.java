@@ -1,14 +1,10 @@
 package smellhistory;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
@@ -210,38 +206,52 @@ public class SmellFactory {
 		return (count > 0);
 	}
 
-	public static ArchSmell createSmell(String smellType, String description, int nVersions) { 
+	public static ArchSmell createSmell(String smellName, int nVersions) { 
 
 		// Assuming that each description is unique for a given smell instance 
 		// (different smell types with the same description/name are not considered)
 
-		ArchSmell smell = CurrentSmells.get(description);
+		
+		
+		ArchSmell smell = CurrentSmells.get(smellName);
+
 		if (smell == null) {
+			
+			String [] sp = smellName.split("_"); 
+			String smellType = sp[0];
+			String description = sp[1];
+			
 			if (smellType.equals(CD_SMELL)) {
 				SMELL_ID++;
 				CDSmell cd = new CDSmell(CD_SMELL+SMELL_ID, nVersions);
 				cd.setDescription(description);
 				cd.configureIndex(CurrentIndex);
-				CurrentSmells.put(description, cd);
+				CurrentSmells.put(smellType+description, cd);
 				return (cd);
+
 			}
 			if (smellType.equals(HL_SMELL)) {
 				SMELL_ID++;
 				HLSmell hl = new HLSmell(HL_SMELL+SMELL_ID, nVersions);
 				hl.setDescription(description);
 				hl.configureIndex(CurrentIndex);
-				CurrentSmells.put(description, hl);
+				CurrentSmells.put(smellType+description, hl);
 				return (hl);
+
 			}		
+
 			if (smellType.equals(UD_SMELL)) {
 				SMELL_ID++;
 				UDSmell ud = new UDSmell(UD_SMELL+SMELL_ID, nVersions);
 				ud.setDescription(description);
 				ud.configureIndex(CurrentIndex);
-				CurrentSmells.put(description, ud);
+				CurrentSmells.put(smellType+description, ud);
 				return (ud);
+
 			}		
 		}
+
+
 
 		return (smell);
 	}
@@ -406,11 +416,7 @@ public class SmellFactory {
 		boolean ok;
 		for (String s: smellEvolution.keySet()) {
 
-			String [] sp = s.split("_");
-			type = sp[0];
-			description = sp[1];
-
-			ArchSmell smell = SmellFactory.createSmell(type, description, nVersions); // Ojo, esto le asigna un nuevo ID al smell
+			ArchSmell smell = SmellFactory.createSmell(s, nVersions); // Ojo, esto le asigna un nuevo ID al smell
 
 			smellFeatures = smellEvolution.get(s);
 			for (String f: smellFeatures.keySet()) {

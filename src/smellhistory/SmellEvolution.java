@@ -100,7 +100,7 @@ public class SmellEvolution {
 	//only keeps those smells appearing in the last version
 	public Map<String,Map<String,double[]>> filterSmells(){
 
-		logger.info(" Filtering smells not appearing in the last version ");
+		logger.info("Filtering smells not appearing in the last version ");
 
 		Map<String,Map<String,double[]>> filteredSmellEvolution = new HashMap<>();
 
@@ -122,6 +122,9 @@ public class SmellEvolution {
 
 		}
 
+		logger.info("Filtered "+(smellEvolution.size()-filteredSmellEvolution.size())+" smells not appearing in "+sortedVersions.get(sortedVersions.size()-1)+" out of "+smellEvolution.size());
+		logger.info("Remaining Smells: "+filteredSmellEvolution.size());
+		
 		return filteredSmellEvolution;
 	}
 
