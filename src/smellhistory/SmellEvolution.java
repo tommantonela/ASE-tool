@@ -546,6 +546,7 @@ public class SmellEvolution {
 		Map<String,List<String>> packages = new HashMap<>();
 		for(String v : sortedVersions)
 			packages.put(v, getTopLevelPackagesForVersion(v));
+				
 		return packages;
 	}
 

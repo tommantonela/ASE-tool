@@ -1,6 +1,8 @@
 package sensitivityAnalysis;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +21,6 @@ import org.apache.commons.cli.Options;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
 
 import sensitivityAnalysis.index.PackageSmellGroup;
 import sensitivityAnalysis.index.SingleSmellGroup;
@@ -49,7 +50,7 @@ public class InterfaceSensitivityAnalysis {
 
 	private static String OPTION_VERSIONS = "versions";
 
-	private static String OPTION_FEATURES = "features";
+//	private static String OPTION_FEATURES = "features";
 
 	private static String OPTION_LEVEL = "level";
 
@@ -92,11 +93,11 @@ public class InterfaceSensitivityAnalysis {
 		versions.setOptionalArg(true); //to avoid parsing errors
 		options.addOption(versions);
 
-//		Option features = new Option(OPTION_FEATURES, "The features to include in the analysis. "
-//				+ "If it not specified, all features are considered.");
-//		features.setArgs(Option.UNLIMITED_VALUES);
-//		features.setOptionalArg(true); //to avoid parsing errors
-//		options.addOption(features);
+		//		Option features = new Option(OPTION_FEATURES, "The features to include in the analysis. "
+		//				+ "If it not specified, all features are considered.");
+		//		features.setArgs(Option.UNLIMITED_VALUES);
+		//		features.setOptionalArg(true); //to avoid parsing errors
+		//		options.addOption(features);
 
 		Option level = new Option(OPTION_LEVEL,"Specifies the abstraction level at to which perform the sensitivity analysis. "
 				+ "The availability of this option depends on the index under analysis."
@@ -105,7 +106,7 @@ public class InterfaceSensitivityAnalysis {
 		level.setOptionalArg(true); //to avoid parsing errors
 		options.addOption(level);
 
-//		options.addOption(OPTION_MORRIS, false,"Runs the Morris analysis.");
+		//		options.addOption(OPTION_MORRIS, false,"Runs the Morris analysis.");
 		options.addOption(OPTION_SOBOL, false,"Runs the Sobol analysis.");
 
 		Option logger = new Option("logger",true,"The default logger is ALL. It can be changed to WARNING, SEVERE, INFO or OFF");
@@ -129,16 +130,16 @@ public class InterfaceSensitivityAnalysis {
 
 	public static void main(String[] args) {
 
-//		BasicConfigurator.configure();
-//		LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
-//		File file = new File(InterfaceSensitivityAnalysis.class.getResource("/resources/quantili-ds-norm.csv").getFile());
-//		context.setConfigLocation(file.toURI());
+		//		BasicConfigurator.configure();
+		//		LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
+		//		File file = new File(InterfaceSensitivityAnalysis.class.getResource("/resources/quantili-ds-norm.csv").getFile());
+		//		context.setConfigLocation(file.toURI());
 		org.apache.logging.log4j.core.config.Configurator.setRootLevel(Level.INFO);
 
 		loadAlternatives();
 
-//		System.setProperty("log4j.skipJansi", "true"); //to remove a WARN
-		
+		//		System.setProperty("log4j.skipJansi", "true"); //to remove a WARN
+
 		Options options = getOptions();
 		CommandLineParser parser = new DefaultParser();
 		try {
@@ -218,7 +219,7 @@ public class InterfaceSensitivityAnalysis {
 
 				if(INDEX.equals("sonargraph"))
 					SA_SCALING_FACTOR = 0.1;
-				
+
 			}
 
 			String firstVersion = null;
@@ -232,8 +233,8 @@ public class InterfaceSensitivityAnalysis {
 					System.exit(0);
 				}
 
-				System.out.println(java.util.Arrays.toString(versions));
-				
+				//				System.out.println(java.util.Arrays.toString(versions));
+
 				if(new NaturalOrderComparator().compare(versions[0], versions[1]) > 0){ //first one is higher
 					logger.warn(" "+versions[1]+" and "+versions[0]+" were interchaged. ");
 					firstVersion = versions[1];
@@ -246,23 +247,25 @@ public class InterfaceSensitivityAnalysis {
 			}
 
 
-			SmellEvolution evolution = null;
-		
+			//			SmellEvolution evolution = null;
+
 			List<String> versionsInFolder = getVersionsInFolder();
 
 			if(firstVersion == null && !versionsInFolder.isEmpty()){
 				firstVersion = versionsInFolder.get(0);
 				lastVersion = versionsInFolder.get(versionsInFolder.size()-1);
 			}
-			
-			if(!line.hasOption(OPTION_FEATURES)){
-				logger.info(" No features were selected. All features will be included in the analysis. ");
-				evolution = new SmellEvolution(INDEX, firstVersion, lastVersion);
-			}
-			else{
-				String [] features = line.getOptionValues(OPTION_FEATURES);
-				evolution = new SmellEvolution(INDEX, firstVersion, lastVersion, features);
-			}
+
+			//			if(!line.hasOption(OPTION_FEATURES)){
+			//				logger.info(" No features were selected. All features will be included in the analysis. ");
+			//				evolution = new SmellEvolution(INDEX, firstVersion, lastVersion);
+			//			}
+			//			else{
+			//				String [] features = line.getOptionValues(OPTION_FEATURES);
+			//				evolution = new SmellEvolution(INDEX, firstVersion, lastVersion, features);
+			//			}
+
+			SmellEvolution evolution = new SmellEvolution(INDEX, firstVersion, lastVersion);
 
 			if(evolution.getVersions().isEmpty()){
 
@@ -355,7 +358,7 @@ public class InterfaceSensitivityAnalysis {
 
 		} catch(Throwable exp ) {
 			logger.error("Parsing failed. Reason: " + exp.getMessage());
-			
+
 
 		}
 		finally{
@@ -387,22 +390,22 @@ public class InterfaceSensitivityAnalysis {
 
 		List<Version> versions = new ArrayList<>();
 
-//		File f = new File(INPUT_PATH);
-//		for(File ff : f.listFiles()){
-//			if(ff.isFile() && ff.getName().endsWith(indices_suffixes.get(INDEX))){
-//				String name = ff.getName().replaceAll(indices_suffixes.get(INDEX), "");
-//				if(selectedVersions.contains(name))
-//					versions.add(FactoryVersion.createVersion(INDEX,ff.getAbsolutePath(),name));
-//			}
-//		}
-		
+		//		File f = new File(INPUT_PATH);
+		//		for(File ff : f.listFiles()){
+		//			if(ff.isFile() && ff.getName().endsWith(indices_suffixes.get(INDEX))){
+		//				String name = ff.getName().replaceAll(indices_suffixes.get(INDEX), "");
+		//				if(selectedVersions.contains(name))
+		//					versions.add(FactoryVersion.createVersion(INDEX,ff.getAbsolutePath(),name));
+		//			}
+		//		}
+
 		String suffix = indices_suffixes.get(INDEX);
 		for(String sv : selectedVersions){
 			String path = INPUT_PATH+File.separator+sv+suffix;
 			if(new File(path).exists())
 				versions.add(FactoryVersion.createVersion(INDEX,path,sv));
 		}
-		
+
 		return versions;
 
 	}
@@ -410,7 +413,7 @@ public class InterfaceSensitivityAnalysis {
 	private static void performSensitivityAnalysis(SmellEvolution evolution){
 
 		String outputSA = InterfaceSensitivityAnalysis.INPUT_PATH+File.separator+"sa";
-		
+
 		new File(outputSA).mkdirs(); //creating the folder to store the files needed for the sensitivity analysis
 
 		SmellFactory.setIndex(INDEX);
@@ -433,24 +436,19 @@ public class InterfaceSensitivityAnalysis {
 			logger.info("Generating groups by packages (with smells) ...");
 
 			Map<String,List<String>> topLevelPackages = evolution.getTopLevelPackages();
-			for(String v : topLevelPackages.keySet())
+			for(String v : topLevelPackages.keySet()){
+//				System.out.println(v+" "+topLevelPackages.get(v).size()+" "+topLevelPackages.get(v));
 				SmellFactory.setPackagesForVersion(v, topLevelPackages.get(v));
-//			List<String> versions = evolution.getVersions(); 
-//			for(String v : versions)
-//				SmellFactory.setPackagesForVersion(v, evolution.getTopLevelPackagesForVersion(v));
-			
-				
-
-			SmellFactory.reduceToTopLevelPackages(evolution.getHighLevelRoot());
+			}
 
 			groups = PackageSmellGroup.generateGroups(SmellFactory.getSmells()); // For the packages in the latest version
-			logger.info("	Package smell groups: "+groups.size());	
+			logger.info("	Package smell groups: "+groups.size());		
 
 		}
 
 		SAnalysis sa = SAnalysis.getSA(SENSITIVITY);
 		if(sa.execute(groups, true)){
-						
+
 			List<String> rankedSmells = sa.generateElementRanking(InterfaceSensitivityAnalysis.INPUT_PATH + File.separator + "smellRanking__"+evolution.getFirstVersion()+"_"+evolution.getLastVersion()+"_"+LEVEL+".csv");
 
 			if(rankedSmells != null){
@@ -484,21 +482,29 @@ public class InterfaceSensitivityAnalysis {
 				System.out.println();
 			}
 		}
-				
+
 		deleteRecursive(new File(outputSA));
-		
+
 	}
 
-	private static void deleteRecursive(File path){
-		File[] c = path.listFiles();
-		logger.debug("Cleaning out folder:" + path.toString());
-		for (File file : c){
+	public static void deleteRecursive(File path){
+		logger.info("Cleaning out folder:" + path.toString());
+		for (File file : path.listFiles()){
 			if (file.isDirectory()){
-				logger.debug("Deleting file:" + file.toString());
+				logger.debug("Deleting folder:" + file.toString());
 				deleteRecursive(file);
-				file.delete();
+				try{
+					Files.delete(file.toPath());
+				}catch(IOException e){
+					logger.error("Error deleting folder:" + file.toString()+" "+e.getMessage());
+				}
 			} else {
-				file.delete();
+				logger.debug("Deleting file:" + file.toString());
+				try{
+					Files.delete(file.toPath());
+				}catch(IOException e){
+					logger.error("Error deleting file:" + file.toString()+" "+e.getMessage());
+				}
 			}
 		}
 		path.delete();

@@ -213,6 +213,9 @@ public class Parser {
 		if(hlr > 0)
 			hlr++;
 
+		if(namespaces.containsKey(highLevel)) //as the for cycle now adds inside the if, there is no chance of adding the toplevel (as it would not enter the for cycle)
+			packages.add(highLevel);
+		
 		for(String p : namespaces.keySet()){ //for each package!
 
 			if(p.startsWith(highLevel)){
@@ -221,91 +224,95 @@ public class Parser {
 				StringBuilder sb = new StringBuilder();
 				sb.append(highLevel);
 
-				boolean hasClasses = false;
-				for(int i=hlr;i<pa.length && !hasClasses;i++){
+				for(int i=hlr;i<pa.length;i++){
 
-					if(pa[i].length() > 0){
+					if(pa[i].length() > 0  && !pa[i].equals("impl")){ //if this package does not equals to impl, we added and check whether it has classes
 						if(sb.length() > 0)
 							sb.append(".");
 
 						sb.append(pa[i]);
+						
+						if(namespaces.containsKey(sb.toString())){ //maybe it does not have sense to test the parent, because it the parent had classes, we might have added it before...
+							packages.add(sb.toString());
+							break;
+						}
+						
 					}
 
-					if(namespaces.containsKey(sb.toString()))
-						hasClasses = true;
-
-				}
-
-				if(namespaces.containsKey(sb.toString()))
-					packages.add(sb.toString());
-
-			}
-
-
-		}
-		return packages;
-	}
-
-	private Set<String> getNaiveTopLevelPackage(){
-
-		highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(namespaces.keySet().toArray(new String[]{}));
-		if(highLevelRoot.endsWith("."))
-			highLevelRoot = highLevelRoot.substring(0, highLevelRoot.length()-1);
-
-		if(highLevelRoot.length() != 0)
-			return getNaivePackages(highLevelRoot,namespaces.keySet());
+//					if(namespaces.containsKey(sb.toString())){ //maybe it does not have sense to test the parent, because it the parent had classes, we might have added it before...
+//						packages.add(sb.toString());
+//						break;
+//					}
 		
-		//we have no common root - we need to find the potential commons!
-		Map<String,Set<String>> potentialRoots = new HashMap<>();
-		for(String a : namespaces.keySet()){
-			int index = a.indexOf(".");
-			String a_edited = a;
-			if(index > 0)
-				a_edited = a.substring(0,index);
-
-			Set<String> aux = potentialRoots.get(a_edited);
-			if(aux == null){
-				aux = new HashSet<>();
-				potentialRoots.put(a_edited, aux);
+				}
+					
 			}
 
-			aux.add(a);
-		}
 
-		Set<String> packages = new HashSet<>();
-		for(String pr : potentialRoots.keySet()){
-			
-			highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(potentialRoots.get(pr).toArray(new String[]{}));
-			
-			packages.addAll(getNaivePackages(highLevelRoot,potentialRoots.get(pr)));
-			
 		}
-
 		return packages;
 	}
 
-	private Set<String> getNaivePackages(String topLevel,Set<String> packagesToSearch) {
-		Set<String> packages = new HashSet<>();
-
-		for(String a : packagesToSearch){ //for every package we got here
-
-			a = a.replace(topLevel, "");
-
-			if(a.length() == 0)
-				packages.add(topLevel);
-			else{
-				if(a.startsWith("."))
-					a = a.substring(1);
-				
-				int index = a.indexOf(".");
-				if(index > 0)
-					a = a.substring(0,index);
-				
-				packages.add(topLevel+"."+a);
-			}
-		}
-		return packages;
-	}
+//	private Set<String> getNaiveTopLevelPackage(){
+//
+//		highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(namespaces.keySet().toArray(new String[]{}));
+//		if(highLevelRoot.endsWith("."))
+//			highLevelRoot = highLevelRoot.substring(0, highLevelRoot.length()-1);
+//
+//		if(highLevelRoot.length() != 0)
+//			return getNaivePackages(highLevelRoot,namespaces.keySet());
+//		
+//		//we have no common root - we need to find the potential commons!
+//		Map<String,Set<String>> potentialRoots = new HashMap<>();
+//		for(String a : namespaces.keySet()){
+//			int index = a.indexOf(".");
+//			String a_edited = a;
+//			if(index > 0)
+//				a_edited = a.substring(0,index);
+//
+//			Set<String> aux = potentialRoots.get(a_edited);
+//			if(aux == null){
+//				aux = new HashSet<>();
+//				potentialRoots.put(a_edited, aux);
+//			}
+//
+//			aux.add(a);
+//		}
+//
+//		Set<String> packages = new HashSet<>();
+//		for(String pr : potentialRoots.keySet()){
+//			
+//			highLevelRoot = org.apache.commons.lang3.StringUtils.getCommonPrefix(potentialRoots.get(pr).toArray(new String[]{}));
+//			
+//			packages.addAll(getNaivePackages(highLevelRoot,potentialRoots.get(pr)));
+//			
+//		}
+//
+//		return packages;
+//	}
+//
+//	private Set<String> getNaivePackages(String topLevel,Set<String> packagesToSearch) {
+//		Set<String> packages = new HashSet<>();
+//
+//		for(String a : packagesToSearch){ //for every package we got here
+//
+//			a = a.replace(topLevel, "");
+//
+//			if(a.length() == 0)
+//				packages.add(topLevel);
+//			else{
+//				if(a.startsWith("."))
+//					a = a.substring(1);
+//				
+//				int index = a.indexOf(".");
+//				if(index > 0)
+//					a = a.substring(0,index);
+//				
+//				packages.add(topLevel+"."+a);
+//			}
+//		}
+//		return packages;
+//	}
 
 	public static void main(String[] args) {
 
@@ -334,9 +341,9 @@ public class Parser {
 
 		parser.namespaces.remove("META-INF.services.org.apache.camel.component");
 
-		//		Set<String> ss = parser.getTopLevelPackages();
+				Set<String> ss = parser.getTopLevelPackages();
 
-		Set<String> ss = parser.getNaiveTopLevelPackage();
+//		Set<String> ss = parser.getNaiveTopLevelPackage();
 
 		System.out.println(" -- Top Level packages: "+ss.size()+" :: "+ss);
 		for(String s : ss)

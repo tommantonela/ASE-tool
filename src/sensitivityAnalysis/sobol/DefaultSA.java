@@ -80,6 +80,7 @@ public abstract class DefaultSA extends SAnalysis {
 				}
 				
 				long passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
+				reader.close();	
 				logger.info("Elapsed time: "+passedTimeInSeconds+" seconds.");
 				return true;
 			}

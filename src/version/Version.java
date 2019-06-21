@@ -197,7 +197,7 @@ public abstract class Version {
 
 		private static Set<String> getNaivePackages(String topLevel,Set<String> packagesToSearch) {
 			Set<String> packages = new HashSet<>();
-
+			
 			for(String a : packagesToSearch){ //for every package we got here
 
 				a = a.replace(topLevel, "");
@@ -212,7 +212,10 @@ public abstract class Version {
 					if(index > 0)
 						a = a.substring(0,index);
 					
-					packages.add(topLevel+"."+a);
+					if(!a.equals("impl"))
+						packages.add(topLevel+"."+a);
+//					else
+//						packages.add(topLevel); //no need to check it, if there was a parent, we may have already added it
 				}
 			}
 			return packages;

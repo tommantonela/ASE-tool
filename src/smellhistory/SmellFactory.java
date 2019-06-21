@@ -2,6 +2,7 @@ package smellhistory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -86,48 +87,54 @@ public class SmellFactory {
 		return (CurrentPackages.get(version));
 	}
 
-	public static boolean reduceToTopLevelPackages(String defaultPrefix) {
-
-		if (CurrentPackages == null) 
-			return (false);
-
-		logger.debug("  Updating package lists to top-level packages (for all versions)  ");
-
-		List<String> reducedList = null;
-		List<String> packageForVersion = null;
-		for (String k: CurrentPackages.keySet()) {
-			packageForVersion = CurrentPackages.get(k);
-			reducedList = reduceListOfPackages(packageForVersion, defaultPrefix);
-			CurrentPackages.put(k, reducedList); // Updates the structure to top-level packages only
-		}
-
-		return (true);
-	}
-
-	private static List<String> reduceListOfPackages(List<String> packages, String defaultPrefix) {
-
-		Set<String> list = new TreeSet<String>(packages);	
-		Set<String> tobeAdded = new TreeSet<String>();		
-
-		boolean remove = false;
-		String toplevel = null;
-		for (int i = 0; i < packages.size(); i++) {
-			remove = false;
-			toplevel = packages.get(i);
-			for (String pp: list) {
-				if (toplevel.startsWith(pp) && (toplevel.length() > pp.length()) 
-						&& !pp.equals(defaultPrefix)) // pp is prefix of toplevel
-					remove = true;
-			}
-			if (toplevel.contains("impl")) //TODO
-				remove = true;
-
-			if (!remove)
-				tobeAdded.add(toplevel);
-		}
-
-		return new ArrayList<String>(tobeAdded);
-	}
+//	public static boolean reduceToTopLevelPackages(String defaultPrefix) {
+//
+//		if (CurrentPackages == null) 
+//			return (false);
+//
+//		logger.debug("  Updating package lists to top-level packages (for all versions)  ");
+//
+//		List<String> reducedList = null;
+//		List<String> packageForVersion = null;
+//		for (String k: CurrentPackages.keySet()) {
+//			packageForVersion = CurrentPackages.get(k);
+////			Collections.sort(packageForVersion);
+////			System.out.println("ANTES: "+packageForVersion.size()+" "+packageForVersion);
+//			reducedList = reduceListOfPackages(packageForVersion, defaultPrefix);
+////			Collections.sort(reducedList);
+////			System.out.println("DESPUES: "+reducedList.size()+" "+reducedList);
+////			packageForVersion.removeAll(reducedList);
+////			System.out.println("DIFF: "+packageForVersion.size()+" "+packageForVersion);
+//			CurrentPackages.put(k, reducedList); // Updates the structure to top-level packages only
+//		}
+//
+//		return (true);
+//	}
+//
+//	private static List<String> reduceListOfPackages(List<String> packages, String defaultPrefix) {
+//
+//		Set<String> list = new TreeSet<String>(packages);	
+//		Set<String> tobeAdded = new TreeSet<String>();		
+//
+//		boolean remove = false;
+//		String toplevel = null;
+//		for (int i = 0; i < packages.size(); i++) {
+//			remove = false;
+//			toplevel = packages.get(i);
+//			for (String pp: list) {
+//				if (toplevel.startsWith(pp) && (toplevel.length() > pp.length()) 
+//						&& !pp.equals(defaultPrefix)) // pp is prefix of toplevel
+//					remove = true;
+//			}
+//			if (toplevel.contains("impl")) //TODO
+//				remove = true;
+//
+//			if (!remove)
+//				tobeAdded.add(toplevel);
+//		}
+//
+//		return new ArrayList<String>(tobeAdded);
+//	}
 
 	public static String getPreviousVersion(String version) {
 		for (int i = 0; i < AllVersions.size(); i++) {

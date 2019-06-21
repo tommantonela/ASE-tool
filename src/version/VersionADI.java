@@ -23,6 +23,7 @@ import org.paukov.combinatorics.permutations.PermutationGenerator;
 import it.unimib.disco.essere.arcan.TerminalExecutor;
 import parser.Parser;
 import parser.factory.FactoryParser;
+import sensitivityAnalysis.InterfaceSensitivityAnalysis;
 
 public class VersionADI extends Version{
 
@@ -530,87 +531,74 @@ public class VersionADI extends Version{
 
 		File f = new File(out+File.separator+"classCyclesShapeTable.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"classCyclicDependencyMatrix.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"classCyclicDependencyTable.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"CM.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"mas.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"packageCyclesShapeTable.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"packageCyclicDependencyMatrix.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"packageCyclicDependencyTable.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"pkHL.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"PM.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"testADIResults.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"UD.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 		f = new File(out+File.separator+"UD30.csv");
 		if(!f.exists()){
-			deleteRecursive(new File(out));
+			InterfaceSensitivityAnalysis.deleteRecursive(new File(out));
 			return false;
 		}
 
 		return true;
 	}
 
-	public static void deleteRecursive(File path){
-		File[] c = path.listFiles();
-		logger.debug("  Cleaning out folder:" + path.toString()+" ");
-		for (File file : c){
-			if (file.isDirectory()){
-				logger.debug("  Deleting file:" + file.toString()+"  ");
-				deleteRecursive(file);
-				file.delete();
-			} else {
-				file.delete();
-			}
-		}
-		path.delete();
-	}
+
 
 
 	public static void main(String[] args) {
