@@ -20,9 +20,11 @@ A description of the software's architecture, tutorials and file examples can be
 
 A video demonstrating usage cases can be found at https://www.youtube.com/watch?v=6RL0qCqZYPM. 
 
+<!--
 ## Contact information
 
-[//]: # (- _Antonela Tommasel_ (ISISTAN, CONICET-UNICEN. Argentina) antonela.tommasel@isistan.unicen.edu.ar)
+- _Antonela Tommasel_ (ISISTAN, CONICET-UNICEN. Argentina) antonela.tommasel@isistan.unicen.edu.ar
 - _J. Andres Diaz-Pace_ (ISISTAN, CONICET-UNICEN. Argentina) andres.diazpace@isistan.unicen.edu.ar 
 - _Ilaria Pigazzini_ (Department of Informatics, Systems and Communication, Università of Milano-Bicocca, Italy) i.pigazzini@campus.unimib.it 
 - _Francesca Arcelli Fontana_ (Department of Informatics, Systems and Communication, Università of Milano-Bicocca, Italy) arcelli@disco.unimib.it 
+-->
