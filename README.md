@@ -1,6 +1,5 @@
 # Sen4Smells
-Tool for Prioritizing Architecture-Sensitive Smells based on a Technical Debt Index
-
+Sen4Smells is tool for prioritizing architecture-sensitive smells based on a technical debt index (e.g., ADI, SDI, etc.)
 Sen4Smells is licenced under the Apache License V2.0.
 
 The main functionality of the Sen4Smells is providing assistence to engineers for interpretating Technical Debt metrics in terms problematic Architectural Smells and system packages.
@@ -23,7 +22,7 @@ A video demonstrating usage cases can be found at https://www.youtube.com/watch?
 
 ## Contact information
 
-- _Antonela Tommasel_ (ISISTAN, CONICET-UNICEN. Argentina) antonela.tommasel@isistan.unicen.edu.ar 
+[//]: # (- _Antonela Tommasel_ (ISISTAN, CONICET-UNICEN. Argentina) antonela.tommasel@isistan.unicen.edu.ar)
 - _J. Andres Diaz-Pace_ (ISISTAN, CONICET-UNICEN. Argentina) andres.diazpace@isistan.unicen.edu.ar 
 - _Ilaria Pigazzini_ (Department of Informatics, Systems and Communication, Università of Milano-Bicocca, Italy) i.pigazzini@campus.unimib.it 
 - _Francesca Arcelli Fontana_ (Department of Informatics, Systems and Communication, Università of Milano-Bicocca, Italy) arcelli@disco.unimib.it 
