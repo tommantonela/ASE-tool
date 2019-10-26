@@ -21,7 +21,7 @@ A description of the software's architecture, tutorials and file examples can be
 A video demonstrating use cases can be found at https://www.youtube.com/watch?v=6RL0qCqZYPM.
 
 ## Reproducibility Kit
-A dataset with 3 analyzed systems (Apache Camel, Apache Cxf, and Hibernate) is avalable [here](https://github.com/tommantonela/Sen4Smells/wiki).
+A dataset with 3 analyzed systems (Apache Camel, Apache Cxf, and Hibernate) is avalable [here](https://github.com/tommantonela/Sen4Smells/wiki/Reproducibility-Kit).
 
 <!--
 ## Contact information
