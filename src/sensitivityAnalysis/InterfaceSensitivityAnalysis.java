@@ -438,7 +438,7 @@ public class InterfaceSensitivityAnalysis {
 
 			Map<String,List<String>> topLevelPackages = evolution.getTopLevelPackages();
 			for(String v : topLevelPackages.keySet()){
-//				System.out.println(v+" "+topLevelPackages.get(v).size()+" "+topLevelPackages.get(v));
+				System.out.println(v+" "+topLevelPackages.get(v).size()+" "+topLevelPackages.get(v));
 				SmellFactory.setPackagesForVersion(v, topLevelPackages.get(v));
 			}
 
@@ -450,7 +450,7 @@ public class InterfaceSensitivityAnalysis {
 		SAnalysis sa = SAnalysis.getSA(SENSITIVITY);
 		if(sa.execute(groups, true)){
 
-			List<String> rankedSmells = sa.generateElementRanking(InterfaceSensitivityAnalysis.INPUT_PATH + File.separator + "smellRanking__"+evolution.getFirstVersion()+"_"+evolution.getLastVersion()+"_"+LEVEL+".csv");
+			List<String> rankedSmells = sa.generateElementRanking(InterfaceSensitivityAnalysis.INPUT_PATH + File.separator + "smellRanking__"+INDEX+"_"+evolution.getFirstVersion()+"_"+evolution.getLastVersion()+"_"+LEVEL+".csv");
 
 			if(rankedSmells != null){
 
@@ -459,7 +459,7 @@ public class InterfaceSensitivityAnalysis {
 				System.out.println();
 
 				int max = 10;
-				if(rankedSmells.size() < max)
+//				if(rankedSmells.size() < max)
 					max = rankedSmells.size();
 
 				

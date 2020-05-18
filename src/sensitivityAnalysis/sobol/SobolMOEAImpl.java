@@ -167,6 +167,7 @@ public class SobolMOEAImpl extends DefaultSA {
 			boolean parseFirstOrder = false;
 			boolean parseTotalOrder = false;
 			while ((strLine = br.readLine()) != null)   {
+								
 				tokens = strLine.split("\\s+");
 
 				// Very ad-hoc parsing, should be revised to make it more robust!

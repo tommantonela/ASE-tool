@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,8 +42,6 @@ public class SmellEvolution {
 	//Might not be the full set of generated features. Nonetheless, EVERY feature is saved so as to load the evolution without problems
 
 	String indexUnderAnalysis;
-
-	String highLevelRoot = null;
 
 	static final Logger logger = LogManager.getLogger(SmellEvolution.class);
 
@@ -193,7 +192,7 @@ public class SmellEvolution {
 
 				if(previousScores != null){ //updates scores
 
-//					System.out.println("encontrÈ con quÈ matchear");
+//					System.out.println("encontrÔøΩ con quÔøΩ matchear");
 					
 					for(int j=0;j<allFeatures.size();j++){
 						double [] sc = previousScores.get(allFeatures.get(j));
@@ -511,7 +510,6 @@ public class SmellEvolution {
 		if(v != null){ 
 			logger.info("Getting top level packages with classes inside for: "+version);
 			List<String> pp = v.getTopLevelPackages();
-			highLevelRoot = Version.getHighLevelRoot();
 			logger.info("Top level packages for: "+version+" "+pp.size());
 			return pp;
 		}
@@ -522,25 +520,23 @@ public class SmellEvolution {
 			logger.info("Getting top level packages with classes inside for: "+version);
 			Parser parser = FactoryParser.getParser(fileName,"package");
 			List<String> aux = new ArrayList<String> (parser.getTopLevelPackages());
-			highLevelRoot = parser.getHighLevelRootPackage();
 			logger.info("Top level packages for: "+version+" "+aux.size());
 			return aux;
 		}				
 
-		//if we are here, we do not have neither the version nor the .jar, so we can only naÔvely check for the first level packages ... re using Version code
+		//if we are here, we do not have neither the version nor the .jar, so we can only naÔøΩvely check for the first level packages ... re using Version code
 		
-		logger.info("Getting naÔve top level packages for: "+version);
+		logger.info("Getting naÔøΩve top level packages for: "+version);
 		int versionN = sortedVersions.indexOf(version);
 		//we first need to find which smells appear in the selected version
 		Set<String> smellsInVersion = new HashSet<>();
 		for(Entry<String,Map<String,double[]>> e : smellEvolution.entrySet()){
 			Map<String,double[]> scores = e.getValue();
 			if(Double.isFinite(scores.get(scores.keySet().iterator().next())[versionN])) //if the score is finite
-				smellsInVersion.add(e.getKey());
+				smellsInVersion.addAll(Arrays.asList(e.getKey().substring(e.getKey().indexOf("_")).split(";"))); //TODO: ESTO EST√Å MAL!!!
 		}
 		
 		Set<String> packages = Version.getTopLevelPackages(smellsInVersion);
-		highLevelRoot = Version.getHighLevelRoot();
 		logger.info("Top level packages for: "+version+" "+packages.size());
 		return new ArrayList<>(packages);
 	}
@@ -551,10 +547,6 @@ public class SmellEvolution {
 			packages.put(v, getTopLevelPackagesForVersion(v));
 				
 		return packages;
-	}
-
-	public String getHighLevelRoot(){
-		return highLevelRoot;
 	}
 
 	public void setVersions(String v1, String v2){

@@ -236,7 +236,7 @@ public class VersionADI extends Version{
 		while(it.hasNext()){
 
 			List<String> pot = it.next().getVector();
-			if(parser.dependsOn(pot.get(pot.size()-1), pot.get(0))){ //si el último con el primero...
+			if(parser.dependsOn(pot.get(pot.size()-1), pot.get(0))){ //si el ï¿½ltimo con el primero...
 				boolean depends = true;
 				for(int i=0;i<pot.size()-1 && depends;i++)
 					if(!parser.dependsOn(pot.get(i), pot.get(i+1)))
@@ -475,11 +475,11 @@ public class VersionADI extends Version{
 //						break;
 //					}
 //
-//					if(numberDecreased == 0){ //si todavía no bajó, puede bajar uno
+//					if(numberDecreased == 0){ //si todavï¿½a no bajï¿½, puede bajar uno
 //						if(currentIndex < index)
 //							numberDecreased++;
 //					}
-//					else{//si ya bajó, no puede volver a bajar
+//					else{//si ya bajï¿½, no puede volver a bajar
 //
 //						if(currentIndex < index || currentIndex > firstIndex){
 //							potential = false;
@@ -612,19 +612,19 @@ public class VersionADI extends Version{
 
 
 	public static void main(String[] args) {
-
-		Version v = new VersionADI("","");
-		v.smells = new HashMap<>();
-		v.smells.clear();
-		v.smells.put("cd", new HashSet<>());
-		v.smells.get("cd").add("A;B;C");
-		v.smells.get("cd").add("A;F;C");
-		v.smells.get("cd").add("A;D;C");
-
-		System.out.println(v.findSmell("cd_B;C;A"));
-		System.out.println(v.findSmell("cd_C;A;B"));
-		System.out.println(v.findSmell("cd_B;A;C"));
-		System.out.println(v.findSmell("cd_D;C;A"));
+		
+//		Version v = new VersionADI("","");
+//		v.smells = new HashMap<>();
+//		v.smells.clear();
+//		v.smells.put("cd", new HashSet<>());
+//		v.smells.get("cd").add("A;B;C");
+//		v.smells.get("cd").add("A;F;C");
+//		v.smells.get("cd").add("A;D;C");
+//
+//		System.out.println(v.findSmell("cd_B;C;A"));
+//		System.out.println(v.findSmell("cd_C;A;B"));
+//		System.out.println(v.findSmell("cd_B;A;C"));
+//		System.out.println(v.findSmell("cd_D;C;A"));
 
 	}
 

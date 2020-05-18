@@ -32,7 +32,7 @@ public class PackageSmellGroup extends SmellGroup {
 			g = new PackageSmellGroup(packagesLatestVersion.get(i));
 			groups.put(packagesLatestVersion.get(i), g);
 		}
-		
+				
 		String p = null;
 		ArrayList<ArchSmell> gsmells = null;
 		int c = 0;
@@ -47,6 +47,7 @@ public class PackageSmellGroup extends SmellGroup {
 //				added = false;
 				if (s instanceof HLSmell) {
 					if (s.getDescription().contains(p)) {
+//						System.out.println(p+" :: "+s.getDescription());
 //						added = 
 						gsmells.add(s);
 					}
@@ -59,6 +60,7 @@ public class PackageSmellGroup extends SmellGroup {
 				}
 				if (s instanceof CDSmell) {
 					if (s.getDescription().contains(p)) {
+						System.out.println(p+" :: "+s.getDescription());
 						gsmells.add(s);
 					}
 				}
@@ -103,6 +105,9 @@ public class PackageSmellGroup extends SmellGroup {
 		logger.info("Total elements (with overlapping): "+total);
 		
 		SmellFactory.CurrentSmellPackages = groups;
+		
+		for(String k : groups.keySet())
+			System.out.println(k+" :: "+groups.get(k).getName());
 		
 		return (groups.values());
 	}

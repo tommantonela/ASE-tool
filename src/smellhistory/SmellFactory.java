@@ -26,12 +26,12 @@ public class SmellFactory {
 
 	public static final String INVALID_VALUE = "-Infinity";
 
-	private static HashMap<String, ArchSmell> CurrentSmells = null;
-	public static HashMap<String, SmellGroup> CurrentSmellPackages = null;
+	private static Map<String, ArchSmell> CurrentSmells = null;
+	public static Map<String, SmellGroup> CurrentSmellPackages = null;
 
 	private static List<String> AllVersions = null;
 
-	private static LinkedHashMap<String, List<String>> CurrentPackages = null;
+	private static Map<String, List<String>> CurrentPackages = null;
 
 	private static IndexComputation CurrentIndex = null;
 
@@ -42,7 +42,7 @@ public class SmellFactory {
 	public static void initialize(List<String> versions) {
 		CurrentSmells = new HashMap<String,ArchSmell>();
 		AllVersions = versions;
-		CurrentPackages = new LinkedHashMap<>();
+		CurrentPackages = new HashMap<>();
 
 		return;
 	}
@@ -50,7 +50,7 @@ public class SmellFactory {
 	public static void clear() {
 		CurrentSmells = new HashMap<String,ArchSmell>();
 		AllVersions.isEmpty();
-		CurrentPackages = new LinkedHashMap<>();
+		CurrentPackages = new HashMap<>();
 
 		return;
 	}
@@ -409,8 +409,6 @@ public class SmellFactory {
 
 		int nVersions = sortedVersions.size();
 
-		String description;
-		String type; 
 		Map<String, double[]> smellFeatures;
 		double[] featureValues;
 		boolean ok;

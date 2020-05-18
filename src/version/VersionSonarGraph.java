@@ -117,8 +117,28 @@ public class VersionSonarGraph extends Version{
 	public static void main(String[] args) {
 
 		String xmlPath = "E:/test_arcanSA/aa_2019-06-12_00-52-28.xml";
-		xmlPath = "E:/test_arcanSA/apache-camel/camel-core-2.2.0_2019-06-18_17-05-44.xml";
+		xmlPath = "C:/Users/Anto/Desktop/esem/hibernate";
+		
+		File f = new File(xmlPath);
+		for(File ff : f.listFiles()){
+			
+			if(!ff.isFile() || !ff.getName().endsWith(".xml"))
+				continue;
+			
+			ISonargraphSystemController controller = ControllerAccess.createController();
+			Result result = controller.loadSystemReport(new File(ff.getAbsolutePath()));
 
+			ISystemInfoProcessor info = controller.createSystemInfoProcessor();
+
+			List<ICycleGroupIssue> packageCycles = getCycleGroup(info, "NamespaceCycleGroup");
+			packageCycles.addAll(getCycleGroup(info, "CriticalNamespaceCycleGroup"));
+
+			System.out.println(ff.getName()+" "+packageCycles.size());
+
+		}
+		
+		System.exit(0);
+		
 		ISonargraphSystemController controller = ControllerAccess.createController();
 		Result result = controller.loadSystemReport(new File(xmlPath));
 
@@ -129,7 +149,7 @@ public class VersionSonarGraph extends Version{
 		List<ICycleGroupIssue> packageCycles = getCycleGroup(info, "NamespaceCycleGroup");
 		packageCycles.addAll(getCycleGroup(info, "CriticalNamespaceCycleGroup"));
 
-		//		System.out.println(packageCycles);
+		System.out.println(packageCycles.size());
 
 		System.out.println("----------------------");
 
