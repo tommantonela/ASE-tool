@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.hello2morrow.sonargraph.integration.access.controller.ControllerAccess;
+import com.hello2morrow.sonargraph.integration.access.controller.ControllerFactory;
 import com.hello2morrow.sonargraph.integration.access.controller.ISonargraphSystemController;
 import com.hello2morrow.sonargraph.integration.access.controller.ISystemInfoProcessor;
 import com.hello2morrow.sonargraph.integration.access.foundation.Result;
@@ -25,7 +26,8 @@ public class VersionSonarGraph extends Version{
 	@Override
 	protected void processVersion(String xmlPath) {
 		
-		ISonargraphSystemController controller = ControllerAccess.createController();
+//		ISonargraphSystemController controller = ControllerAccess.createController();
+		ISonargraphSystemController controller = ControllerFactory.createController();
 //		Result result = controller.loadSystemReport(new File(xmlPath));
 		controller.loadSystemReport(new File(xmlPath));
 
@@ -117,7 +119,7 @@ public class VersionSonarGraph extends Version{
 	public static void main(String[] args) {
 
 		String xmlPath = "E:/test_arcanSA/aa_2019-06-12_00-52-28.xml";
-		xmlPath = "C:/Users/Anto/Desktop/esem/hibernate";
+		xmlPath = "C:/Users/Anto/Desktop/ArchitecturalDebtSensitivityAnalysis\\target\\sonargraph";
 		
 		File f = new File(xmlPath);
 		for(File ff : f.listFiles()){
@@ -130,7 +132,7 @@ public class VersionSonarGraph extends Version{
 
 			ISystemInfoProcessor info = controller.createSystemInfoProcessor();
 
-			List<ICycleGroupIssue> packageCycles = getCycleGroup(info, "NamespaceCycleGroup");
+			List<ICycleGroupIssue> packageCycles = getCycleGroup(info,"NamespaceCycleGroup");
 			packageCycles.addAll(getCycleGroup(info, "CriticalNamespaceCycleGroup"));
 
 			System.out.println(ff.getName()+" "+packageCycles.size());
